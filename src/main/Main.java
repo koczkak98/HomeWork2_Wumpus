@@ -15,13 +15,13 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        /*
+
         View view = new View();
         view.createGameWindow();
 
-         */
 
-        WumpusPlay test = new WumpusPlay();
+
+        //WumpusPlay test = new WumpusPlay();
 
     }
 }
