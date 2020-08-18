@@ -2,5 +2,5 @@ package programing;
 
 public enum Experience {
 
-    WUMPUS, NOISE, TREASURE;
+    WUMPUS, NOISE, TREASURE, HERO;
 }

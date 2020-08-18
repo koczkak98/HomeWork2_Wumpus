@@ -20,8 +20,5 @@ public class Main extends Application {
         view.createGameWindow();
 
 
-
-        //WumpusPlay test = new WumpusPlay();
-
     }
 }
