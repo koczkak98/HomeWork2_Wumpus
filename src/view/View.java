@@ -41,6 +41,7 @@ public class View {
 
 
 
+
         /** Button */
         /*
         DRAWING THE PLAY
@@ -54,22 +55,14 @@ public class View {
 
                 Button button = new Button();
 
-                WumpusPlay play = new WumpusPlay();
-                if (row == 0 && column == 0)
-                {
-                    button.setText(play.trackDiscovery(row, column));
-                }
-
 
                 button.setOnAction(new EventHandler<ActionEvent>() {
 
                     @Override
                     public void handle(ActionEvent e) {
 
-                        button.setText(play.trackDiscovery(0, 1));
 
-
-                        }
+                    }
 
 
 
