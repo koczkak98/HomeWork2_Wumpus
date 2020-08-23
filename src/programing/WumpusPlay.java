@@ -146,9 +146,23 @@ public class WumpusPlay {
     }
 
 
+    /** BUTTON WITH EXPERIENCE */
+    public String getValue (int row, int column)
+    {
+        String button = "";
+
+        button = this.gameTrack[row][column];
+
+        return button;
+
+    }
+
+    /** DISCOVERY */
     public String trackDiscovery (int row, int column)
     {
         String returnValue = "";
+
+
 
         return returnValue;
 

@@ -55,11 +55,12 @@ public class View {
 
                 Button button = new Button();
 
-
                 button.setOnAction(new EventHandler<ActionEvent>() {
 
                     @Override
                     public void handle(ActionEvent e) {
+
+
 
 
                     }
