@@ -19,10 +19,10 @@ public class Main extends Application {
         WumpusPlay play = new WumpusPlay();
 
 
-        /**
+
         View view = new View();
-        view.createGameWindow();
-         */
+        view.showTable(primaryStage, play);
+
 
 
 

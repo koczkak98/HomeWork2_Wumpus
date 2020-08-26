@@ -10,10 +10,12 @@ public class WumpusPlay {
     /** THAT WILL BE THE TRACK WITH EXPERIENCE */
     private Element[][] gameTrack;
     /** THAT WILL BE THE TMB, WHICH CONTAINS PLAYGROUNDS ALREADY DISCOVERED. */
-    private String[][] discoveryTmb;
+    private Element[][] discoveryTmb;
+
 
     public WumpusPlay() {
         this.gameTrack = new Element[8][8];
+        this.discoveryTmb = new Element[8][8];
 
         /** Empty */
         createEmpty();
@@ -28,7 +30,104 @@ public class WumpusPlay {
         createTreasure ();
 
 
+        /** Step */
+        firstStepDiscovery ();
+
         draw();
+    }
+
+
+    public void firstStepDiscovery ()
+    {
+        this.discoveryTmb[0][0] = new Element(Experience.HERO);
+    }
+
+
+    /** Discovery */
+    public boolean addTmb (int rowStep, int columnStep)
+    {
+        boolean succes = false;
+        /** ROW */
+        int stepAboveRow = 0;
+        int stepDownRow = 0;
+
+        /** COLUMN */
+        int stepLeftColumn = 0;
+        int stepRightColumn = 0;
+
+        if (rowStep == 0)
+        {
+            stepAboveRow = 0;
+            stepDownRow = 1;
+        }
+        else if (rowStep == (this.discoveryTmb.length) - 1)
+        {
+            stepAboveRow = ((this.discoveryTmb.length) - 2);
+            stepDownRow = ((this.discoveryTmb.length) - 1);
+        }
+        else
+        {
+            stepAboveRow = rowStep - 1;
+            stepDownRow = rowStep + 1;
+        }
+
+        if (columnStep == 0)
+        {
+            stepLeftColumn = 0;
+            stepRightColumn = 1;
+        }
+        else if (columnStep == (this.discoveryTmb.length) - 1)
+        {
+            stepLeftColumn = ((this.discoveryTmb.length) - 2);
+            stepRightColumn = ((this.discoveryTmb.length) - 1);
+        }
+        else
+        {
+            stepLeftColumn = rowStep - 1;
+            stepRightColumn = rowStep + 1;
+        }
+
+        for (int row = stepAboveRow; row <= stepDownRow; row ++)
+        {
+            for (int column = stepLeftColumn; column <= stepRightColumn; column ++)
+            {
+                if((this.discoveryTmb[row][column] != null))
+                {
+                    succes = true;
+                    this.discoveryTmb[row][column] = this.gameTrack[row][column];
+                }
+                else
+                {
+                    succes = false;
+                }
+            }
+        }
+        return succes;
+    }
+
+
+    public String getNameDiscovery (int row, int column)
+    {
+        boolean succes = addTmb (row, column);
+        String returnValue = "";
+        if(succes == true)
+        {
+            returnValue = this.discoveryTmb[row][column].getElementName();
+        }
+        return returnValue;
+    }
+
+    /**
+     *
+     *
+     *
+     *
+     */
+
+
+    public String getCellContent(int row, int column)
+    {
+        return (this.gameTrack[row][column].getElementName());
     }
 
 
@@ -65,7 +164,8 @@ public class WumpusPlay {
 
         } while (this.gameTrack[treasureRow][treasureColumn].getExperience() != Experience.EMPTY);
 
-        this.gameTrack[treasureRow][treasureColumn] = new Element(Experience.TREASURE);
+            this.gameTrack[treasureRow][treasureColumn] = new Element(Experience.TREASURE);
+
     }
 
 
@@ -159,6 +259,9 @@ public class WumpusPlay {
             System.out.println();
         }
     }
+
+
+
 
 
 

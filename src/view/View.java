@@ -1,9 +1,5 @@
 package view;
 
-
-
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,16 +8,10 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import programing.WumpusPlay;
 
-import javax.xml.soap.Text;
-import java.util.Random;
-
-
 public class View {
 
-    public void createGameWindow()
+    public void showTable(Stage stage, WumpusPlay gt)
     {
-        Stage stage = new Stage();
-
         //Creating a Grid Pane
         GridPane gridPane = new GridPane();
 
@@ -40,45 +30,20 @@ public class View {
         gridPane.setAlignment(Pos.CENTER);
 
 
+        /** VIEW ELEMENTS */
 
+        for (int row = 0; row < 8; row++) {
 
-        /** Button */
-        /*
-        DRAWING THE PLAY
-         */
+            for (int column = 0; column < 8; column++) {
 
-        int winnerButtonID = (new Random().nextInt(8));
-        int buttonCounter = 0;
+                String gameCellContent = gt.getCellContent(row, column);
 
-        for(int column = 0; column < 8; column++) {
-            for (int row = 0; row < 8; row++) {
+                Button button = new Button(gameCellContent);
 
-                Button button = new Button();
-
-                button.setOnAction(new EventHandler<ActionEvent>() {
-
-                    @Override
-                    public void handle(ActionEvent e) {
-
-
-
-
-                    }
-
-
-
-
-                });
                 gridPane.add(button, column, row);
-
             }
 
         }
-
-        /** Button with caracter */
-
-
-
 
         /** VIEW ELEMENTS */
 
@@ -87,7 +52,7 @@ public class View {
         Scene scene = new Scene(gridPane);
 
         //Setting title to the Stage
-        stage.setTitle("WUMPUS");
+        stage.setTitle("Wumpus Game");
 
         //Adding scene to the stage
         stage.setScene(scene);
