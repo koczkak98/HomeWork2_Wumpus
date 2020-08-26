@@ -1,171 +1,163 @@
 package programing;
 
+import game.Element;
+import game.Experience;
+
 import java.util.Random;
 
 public class WumpusPlay {
 
     /** THAT WILL BE THE TRACK WITH EXPERIENCE */
-    private String[][] gameTrack;
+    private Element[][] gameTrack;
     /** THAT WILL BE THE TMB, WHICH CONTAINS PLAYGROUNDS ALREADY DISCOVERED. */
     private String[][] discoveryTmb;
 
     public WumpusPlay() {
-        this.gameTrack = new String[8][8];
-        this.discoveryTmb = new String[8][8];
+        this.gameTrack = new Element[8][8];
+
+        /** Empty */
+        createEmpty();
+
+        /** Hero */
+        createHero();
+
+        /** Wumpus */
+        createWumpus ();
+
+        /** Treasure */
+        createTreasure ();
+
+
+        draw();
     }
 
 
-    public String getName(Experience experience)
+    /** Put the "empty" in the game */
+    public void createEmpty ()
     {
-        String returnValueName = "";
-
-        if (experience == Experience.WUMPUS)
-        {
-            returnValueName = "W";
-        }
-        else if (experience == Experience.NOISE)
-        {
-            returnValueName = "N";
-        }
-        else if (experience == Experience.TREASURE)
-        {
-            returnValueName = "T";
-        }
-        else if (experience == Experience.HERO)
-        {
-            returnValueName = "H";
-        }
-
-        return returnValueName;
-    }
-
-    private int randomPlace ()
-    {
-        int numb = (new Random().nextInt(7)+1); // még nem találtam ki hogy a széleken hogy oldom meg a zajt
-
-        return numb;
-    }
-
-
-    /** PLACES EXPERIENCE */
-    private void addGameTrack()
-    {
-        /** THE FIRST PLACE OF HERO */
-        this.gameTrack[0][0] = getName(Experience.HERO);
-
-
-        /** THE 3 PLACES OF WUMPUS */
-        int i = 0;
-
-        int rowWumpusPlace = 0;
-        int columnWumpusPlace = 0;
-
-        while (i>3)
-        {
-            while ((this.gameTrack[rowWumpusPlace][columnWumpusPlace]) != null) {
-                rowWumpusPlace = randomPlace();
-                columnWumpusPlace = randomPlace();
-                if (((this.gameTrack[rowWumpusPlace][columnWumpusPlace]) != null) == false) {
-                    break;
-                }
-                this.gameTrack[rowWumpusPlace][columnWumpusPlace] = getName(Experience.WUMPUS);
-
-                /** THE PLACES OF NOISES */
-                /** Usually 1 wumpus has 8 noise */
-                int rowNoisePlace1 = 0;
-                int rowNoisePlace2 = 0;
-                int rowNoisePlace3 = 0;
-
-                int columnNoisePlace1 = 0;
-                int columnNoisePlace2 = 0;
-                int columnNoisePlace3 = 0;
-
-
-                if (rowWumpusPlace != 0)
-                {
-                    rowNoisePlace1 = rowWumpusPlace -1;
-                    rowNoisePlace2 = rowWumpusPlace +1;
-                    rowNoisePlace3 = rowWumpusPlace;
-                }
-                if (columnWumpusPlace != 0)
-                {
-                    columnNoisePlace1 = columnWumpusPlace -1;
-                    columnNoisePlace2 = columnWumpusPlace +1;
-                    columnNoisePlace3 = columnWumpusPlace;
-                }
-                /** above */
-                this.gameTrack[rowNoisePlace1][columnNoisePlace1] = getName(Experience.NOISE); //1
-                this.gameTrack[rowNoisePlace1][columnNoisePlace3] = getName(Experience.NOISE); //2
-                this.gameTrack[rowNoisePlace1][columnNoisePlace2] = getName(Experience.NOISE); //3
-
-                /** row of Wumpus */
-                this.gameTrack[rowNoisePlace3][columnNoisePlace1] = getName(Experience.NOISE); //4
-                this.gameTrack[rowNoisePlace3][columnNoisePlace2] = getName(Experience.NOISE); //5
-
-                /** under */
-                this.gameTrack[rowNoisePlace2][columnNoisePlace1] = getName(Experience.NOISE); //6
-                this.gameTrack[rowNoisePlace2][columnNoisePlace3] = getName(Experience.NOISE); //7
-                this.gameTrack[rowNoisePlace2][columnWumpusPlace] = getName(Experience.NOISE); //8
-            }
-
-            i++;
-        }
-
-
-        /** THE PLACE OF TREASURE */
-        int rowTreasurePlace = 0;
-        int columnTreasurePlace = 0;
-        while ((this.gameTrack[rowTreasurePlace][columnTreasurePlace]) != null)
-        {
-            rowTreasurePlace = randomPlace();
-            columnTreasurePlace = randomPlace();
-            if(((this.gameTrack[rowTreasurePlace][columnTreasurePlace]) != null) == false)
-            {
-                break;
-            }
-        }
-        this.gameTrack[rowTreasurePlace][columnTreasurePlace] = getName(Experience.TREASURE);
-
-
-        /** THE OTHER PLACES OF HERO */
-
-        for (int row = 0; row < this.gameTrack.length; row++)
+        for(int row = 0; row < this.gameTrack.length; row ++)
         {
             for(int column = 0; column < this.gameTrack.length; column++)
             {
-                    if (this.gameTrack [row] [column] == null)
-                    {
-                        this.gameTrack[row] [column] = getName(Experience.HERO);
-                    }
-                    else
-                    {
-                        i++;
-                    }
+                this.gameTrack[row][column] = new Element(Experience.EMPTY);
+            }
+        }
+    }
+
+
+    /** Put the "hero" in the game */
+    public void createHero ()
+    {
+        this.gameTrack[0][0] = new Element(Experience.HERO);
+    }
+
+
+    /** Put the "treasure" in the game */
+    public void createTreasure ()
+    {
+        int treasureRow = 0;
+        int treasureColumn = 0;
+
+        do {
+
+            treasureRow = (new Random().nextInt(6) + 2);
+            treasureColumn = (new Random().nextInt(6) + 2);
+
+        } while (this.gameTrack[treasureRow][treasureColumn].getExperience() != Experience.EMPTY);
+
+        this.gameTrack[treasureRow][treasureColumn] = new Element(Experience.TREASURE);
+    }
+
+
+    /** Put the "Wumpus" in the game */
+    public void createWumpus ()
+    {
+        int count = 0;
+        while (count < 3)
+        {
+            int wumpusRow = 0;
+            int wumpusColumn = 0;
+
+            do {
+
+                wumpusRow = (new Random().nextInt(6) + 2);
+                wumpusColumn = (new Random().nextInt(6) + 2);
+
+            } while (this.gameTrack[wumpusRow][wumpusColumn].getExperience() != Experience.EMPTY);
+
+            this.gameTrack[wumpusRow][wumpusColumn] = new Element(Experience.WUMPUS);
+            createNoise (wumpusRow, wumpusColumn);
+            count ++;
+        }
+    }
+
+
+    public void createNoise (int wumpusRow, int wumpusColumn)
+    {
+        /** Row */
+        int noiseAboveRow = 0;
+        int noiseDownRow = 0;
+
+        /** Column */
+        int noiseLeftColumn = 0;
+        int noiseRightColumn = 0;
+
+        if (wumpusRow == 0)
+        {
+            noiseAboveRow = 0;
+            noiseDownRow = 1;
+        }
+        else if (wumpusRow == ((this.gameTrack.length)-1))
+        {
+            noiseAboveRow = ((this.gameTrack.length)-2);
+            noiseDownRow = ((this.gameTrack.length)-1);
+        }
+        else
+        {
+            noiseAboveRow = wumpusRow -1;
+            noiseDownRow = wumpusRow +1;
+        }
+
+        if (wumpusColumn == 0)
+        {
+            noiseLeftColumn = 0;
+            noiseRightColumn = 1;
+        }
+        else if (wumpusColumn == ((this.gameTrack.length)-1))
+        {
+            noiseLeftColumn = ((this.gameTrack.length)-2);
+            noiseRightColumn = ((this.gameTrack.length)-1);
+        }
+        else
+        {
+            noiseLeftColumn = wumpusColumn-1;
+            noiseRightColumn = wumpusColumn+1;
+        }
+
+        for (int row = noiseAboveRow; row <= noiseDownRow; row++)
+        {
+            for(int column = noiseLeftColumn; column <= noiseRightColumn; column++)
+            {
+                if (this.gameTrack[row][column].getExperience() == Experience.EMPTY)
+                {
+                    this.gameTrack[row][column] = new Element(Experience.NOISE);
                 }
             }
-    }
-
-
-    /** BUTTON WITH EXPERIENCE */
-    public String getValue (int row, int column)
-    {
-        String button = "";
-
-        button = this.gameTrack[row][column];
-
-        return button;
+        }
 
     }
 
-    /** DISCOVERY */
-    public String trackDiscovery (int row, int column)
+
+    public void draw ()
     {
-        String returnValue = "";
-
-
-
-        return returnValue;
-
+        for(int row = 0; row < this.gameTrack.length; row ++)
+        {
+            for(int column = 0; column < this.gameTrack.length; column++)
+            {
+                System.out.print(this.gameTrack[row][column].getElementName() + "  ");
+            }
+            System.out.println();
+        }
     }
 
 
