@@ -4,10 +4,12 @@ public class Element {
 
 
     private Experience experience;
+    private boolean discover;
 
 
-    public Element(Experience experience) {
+    public Element(Experience experience, boolean discover) {
         this.experience = experience;
+        this.discover = discover;
     }
 
 
@@ -18,6 +20,16 @@ public class Element {
 
     public void setExperience(Experience experience) {
         this.experience = experience;
+    }
+
+
+    public boolean getDiscover() {
+        return discover;
+    }
+
+
+    public void setDiscover() {
+        this.discover = true;
     }
 
 

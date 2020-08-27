@@ -9,13 +9,9 @@ public class WumpusPlay {
 
     /** THAT WILL BE THE TRACK WITH EXPERIENCE */
     private Element[][] gameTrack;
-    /** THAT WILL BE THE TMB, WHICH CONTAINS PLAYGROUNDS ALREADY DISCOVERED. */
-    private Element[][] discoveryTmb;
-
 
     public WumpusPlay() {
         this.gameTrack = new Element[8][8];
-        this.discoveryTmb = new Element[8][8];
 
         /** Empty */
         createEmpty();
@@ -31,20 +27,16 @@ public class WumpusPlay {
 
 
         /** Step */
-        firstStepDiscovery ();
 
         draw();
     }
 
 
-    public void firstStepDiscovery ()
-    {
-        this.discoveryTmb[0][0] = new Element(Experience.HERO);
-    }
+
 
 
     /** Discovery */
-    public boolean addTmb (int rowStep, int columnStep)
+    public boolean discovery (int rowStep, int columnStep)
     {
         boolean succes = false;
         /** ROW */
@@ -60,10 +52,10 @@ public class WumpusPlay {
             stepAboveRow = 0;
             stepDownRow = 1;
         }
-        else if (rowStep == (this.discoveryTmb.length) - 1)
+        else if (rowStep == (this.gameTrack.length) - 1)
         {
-            stepAboveRow = ((this.discoveryTmb.length) - 2);
-            stepDownRow = ((this.discoveryTmb.length) - 1);
+            stepAboveRow = ((this.gameTrack.length) - 2);
+            stepDownRow = ((this.gameTrack.length) - 1);
         }
         else
         {
@@ -76,10 +68,10 @@ public class WumpusPlay {
             stepLeftColumn = 0;
             stepRightColumn = 1;
         }
-        else if (columnStep == (this.discoveryTmb.length) - 1)
+        else if (columnStep == (this.gameTrack.length) - 1)
         {
-            stepLeftColumn = ((this.discoveryTmb.length) - 2);
-            stepRightColumn = ((this.discoveryTmb.length) - 1);
+            stepLeftColumn = ((this.gameTrack.length) - 2);
+            stepRightColumn = ((this.gameTrack.length) - 1);
         }
         else
         {
@@ -91,31 +83,54 @@ public class WumpusPlay {
         {
             for (int column = stepLeftColumn; column <= stepRightColumn; column ++)
             {
-                if((this.discoveryTmb[row][column] != null))
+                if((this.gameTrack[row][column].getDiscover() == true))
                 {
                     succes = true;
-                    this.discoveryTmb[row][column] = this.gameTrack[row][column];
+                    break;
                 }
-                else
-                {
-                    succes = false;
-                }
+
             }
         }
         return succes;
     }
 
 
-    public String getNameDiscovery (int row, int column)
+    public void setDiscovered(int row, int column)
     {
-        boolean succes = addTmb (row, column);
-        String returnValue = "";
-        if(succes == true)
-        {
-            returnValue = this.discoveryTmb[row][column].getElementName();
-        }
-        return returnValue;
+        this.gameTrack[row][column].setDiscover();
     }
+
+
+    public boolean finishedGame (int row, int column)
+    {
+        boolean finished = false;
+
+        if (this.gameTrack[row][column].getElementName().equals("W") ||
+                this.gameTrack[row][column].getElementName().equals("T"))
+        {
+            finished = true;
+        }
+
+        return finished;
+    }
+
+
+    public String finishedMessage (int row, int column)
+    {
+        String message = "";
+
+        if (this.gameTrack[row][column].getElementName().equals("W"))
+        {
+            message = "DEAD!";
+        }
+        else if (this.gameTrack[row][column].getElementName().equals("T"))
+        {
+            message = "WON";
+        }
+
+        return message;
+    }
+
 
     /**
      *
@@ -138,7 +153,7 @@ public class WumpusPlay {
         {
             for(int column = 0; column < this.gameTrack.length; column++)
             {
-                this.gameTrack[row][column] = new Element(Experience.EMPTY);
+                this.gameTrack[row][column] = new Element(Experience.EMPTY, false);
             }
         }
     }
@@ -147,7 +162,7 @@ public class WumpusPlay {
     /** Put the "hero" in the game */
     public void createHero ()
     {
-        this.gameTrack[0][0] = new Element(Experience.HERO);
+        this.gameTrack[0][0] = new Element(Experience.HERO, true);
     }
 
 
@@ -164,7 +179,7 @@ public class WumpusPlay {
 
         } while (this.gameTrack[treasureRow][treasureColumn].getExperience() != Experience.EMPTY);
 
-            this.gameTrack[treasureRow][treasureColumn] = new Element(Experience.TREASURE);
+            this.gameTrack[treasureRow][treasureColumn] = new Element(Experience.TREASURE, false);
 
     }
 
@@ -185,7 +200,7 @@ public class WumpusPlay {
 
             } while (this.gameTrack[wumpusRow][wumpusColumn].getExperience() != Experience.EMPTY);
 
-            this.gameTrack[wumpusRow][wumpusColumn] = new Element(Experience.WUMPUS);
+            this.gameTrack[wumpusRow][wumpusColumn] = new Element(Experience.WUMPUS, false);
             createNoise (wumpusRow, wumpusColumn);
             count ++;
         }
@@ -240,7 +255,7 @@ public class WumpusPlay {
             {
                 if (this.gameTrack[row][column].getExperience() == Experience.EMPTY)
                 {
-                    this.gameTrack[row][column] = new Element(Experience.NOISE);
+                    this.gameTrack[row][column] = new Element(Experience.NOISE, false);
                 }
             }
         }
