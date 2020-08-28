@@ -2,6 +2,7 @@ package main;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import programing.ButtonListener;
 import programing.WumpusPlay;
 import view.View;
 
@@ -18,10 +19,11 @@ public class Main extends Application {
 
         WumpusPlay play = new WumpusPlay();
 
-
-
         View view = new View();
-        view.showTable(primaryStage, play);
+
+        ButtonListener bl = new ButtonListener(play, view);
+
+        view.showTable(primaryStage, play, bl);
 
 
 
