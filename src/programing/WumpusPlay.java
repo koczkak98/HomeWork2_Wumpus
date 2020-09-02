@@ -47,48 +47,55 @@ public class WumpusPlay {
         int stepLeftColumn = 0;
         int stepRightColumn = 0;
 
-        if (rowStep == 0)
+        /** ROW */
+        if(rowStep == 0)
         {
+            /** FIRST ROW */
             stepAboveRow = 0;
             stepDownRow = 1;
         }
-        else if (rowStep == (this.gameTrack.length) - 1)
+        else if(rowStep == (this.gameTrack.length -1))
         {
-            stepAboveRow = ((this.gameTrack.length) - 2);
-            stepDownRow = ((this.gameTrack.length) - 1);
+            /** LAST ROW */
+            stepAboveRow = (this.gameTrack.length - 2);
+            stepDownRow = (this.gameTrack.length - 1);
         }
         else
         {
-            stepAboveRow = rowStep - 1;
-            stepDownRow = rowStep + 1;
+            /** MID */
+            stepAboveRow = (rowStep - 1);
+            stepDownRow = (rowStep + 1);
         }
 
-        if (columnStep == 0)
+        /** COLUMN */
+        if(columnStep == 0)
         {
+            /** FIRST COLUMN */
             stepLeftColumn = 0;
             stepRightColumn = 1;
         }
-        else if (columnStep == (this.gameTrack.length) - 1)
+        else if(columnStep == (this.gameTrack.length -1))
         {
-            stepLeftColumn = ((this.gameTrack.length) - 2);
-            stepRightColumn = ((this.gameTrack.length) - 1);
+            /** LAST COLUMN */
+            stepLeftColumn = (this.gameTrack.length - 2);
+            stepRightColumn = (this.gameTrack.length - 1);
         }
         else
         {
-            stepLeftColumn = rowStep - 1;
-            stepRightColumn = rowStep + 1;
+            /** MID */
+            stepLeftColumn = (columnStep - 1);
+            stepRightColumn = (columnStep + 1);
         }
 
-        for (int row = stepAboveRow; row <= stepDownRow; row ++)
-        {
-            for (int column = stepLeftColumn; column <= stepRightColumn; column ++)
-            {
-                if((this.gameTrack[row][column].getDiscover() == true))
+        for (int checkRow = stepAboveRow; checkRow <= stepDownRow; checkRow++) {
+
+            for (int checkColumn = stepLeftColumn; checkColumn <= stepRightColumn; checkColumn++) {
+
+                if(this.gameTrack[checkRow][checkColumn].getDiscover() == true)
                 {
                     succes = true;
                     break;
                 }
-
             }
         }
         return succes;
