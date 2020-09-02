@@ -37,25 +37,23 @@ public class Element {
     {
         String returnValueName = "";
 
-        if (experience == Experience.WUMPUS)
+        if (this.discover == true)
         {
-            returnValueName = "W";
+            if (experience == Experience.WUMPUS) {
+                returnValueName = "W";
+            } else if (experience == Experience.NOISE) {
+                returnValueName = "N";
+            } else if (experience == Experience.TREASURE) {
+                returnValueName = "T";
+            } else if (experience == Experience.HERO) {
+                returnValueName = "H";
+            } else if (experience == Experience.EMPTY) {
+                returnValueName = "E";
+            }
         }
-        else if (experience == Experience.NOISE)
+        else
         {
-            returnValueName = "N";
-        }
-        else if (experience == Experience.TREASURE)
-        {
-            returnValueName = "T";
-        }
-        else if (experience == Experience.HERO)
-        {
-            returnValueName = "H";
-        }
-        else if (experience == Experience.EMPTY)
-        {
-            returnValueName = "E";
+            returnValueName = " ";
         }
 
         return returnValueName;
